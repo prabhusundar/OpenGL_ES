@@ -18,8 +18,6 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 		add_definitions(-DGLUS_ES2)
 		
 		include_directories(/opt/vc/include /opt/vc/include/interface/vcos/pthreads /opt/vc/include/interface/vmcs_host/linux ${Example02_ES2_SOURCE_DIR}/../GLUS/src)		
-
-		link_directories(/opt/vc/lib ${Example02_ES2_SOURCE_DIR}/../GLUS)
 		
 	ENDIF()
 	
@@ -52,11 +50,20 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	# Linux
 
 	IF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
-		# Raspberry Pi
-		# ToDo Add i.MX6
-		
-		target_link_libraries(Example02_ES2 SDL GLUS EGL GLESv2 bcm_host vcos vchiq_arm pthread rt m)
-		
+	        link_directories(${Example02_ES2_SOURCE_DIR}/../GLUS)
+                target_link_libraries(Example02_ES2 SDL GLUS EGL GLESv2 pthread rt m)
+                IF(${SoC} MATCHES "iMX6")
+                        # i.MX6
+                        # Everything is in 
+
+                ELSE()
+                        # Raspberry Pi
+
+                        include_directories(/opt/vc/include /opt/vc/include/interface/vcos/pthreads /opt/vc/include/interface/vmcs_host/linux)
+			link_directories(/opt/vc/lib)
+                        target_link_libraries(Example02_ES2 bcm_host vcos vchiq_arm)
+
+                ENDIF()	
 	ENDIF()
 	
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
