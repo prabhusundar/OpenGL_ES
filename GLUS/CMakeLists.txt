@@ -31,18 +31,18 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	IF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
 		# Raspberry Pi and i.MX6
 		
-		SET(OpenGL "ES2")
 		
-		add_definitions(-DGLUS_ES2)
 
 		IF(${SoC} MATCHES "iMX6")
 			# i.MX6
-
+            add_definitions(-DGLUS_ES)
+		    SET(OpenGL "ES")
 			# Everything is in /usr/include
 
 		ELSE()
 			# Raspberry Pi
 
+		    SET(OpenGL "ES2")
 			include_directories(/opt/vc/include /opt/vc/include/interface/vcos/pthreads /opt/vc/include/interface/vmcs_host/linux)		
 
 		ENDIF()
